@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medya Kütüphanesi</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>CineLibrary</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home" class="active">Ana Sayfa</a></li>
+                    <li><a href="#" id="nav-favorites">Favorilerim</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="search-section">
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Film veya dizi ara...">
+                <button type="submit">Ara</button>
+            </form>
+            <div class="filters">
+                <button class="filter-btn active" data-type="movie">Filmler</button>
+                <button class="filter-btn" data-type="tv">Diziler</button>
+            </div>
+        </section>
+
+        <section id="content-section">
+            <h2 id="section-title">Popüler İçerikler</h2>
+            <div id="media-grid" class="grid-container"></div>
+        </section>
+
+        <section id="favorites-section" class="hidden">
+            <h2>Favorilerim</h2>
+            <div id="favorites-grid" class="grid-container"></div>
+        </section>
+    </main>
+
+    <div id="modal-overlay" class="hidden">
+        <div id="modal-content">
+            <span id="close-modal">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 CineLibrary Web Projesi</p>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
