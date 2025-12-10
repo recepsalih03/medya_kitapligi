@@ -4,21 +4,28 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 const state = {
     page: 1,
-    totalPage: 1,
-    currentType: 'movie', 
+    currentType: 'movie',
     searchQuery: null
 };
 
-async function fetchData(endpoint) {
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+const filterBtns = document.querySelectorAll('.filter-btn');
+const sectionTitle = document.getElementById('section-title');
+
+async function fetchData(endpoint, query = null) {
     try {
-        const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=tr-TR`);
-        if (!response.ok) {
-            throw new Error(`HTTP Hata: ${response.status}`);
+        let url = `${BASE_URL}${endpoint}?api_key=${API_KEY}&language=tr-TR&page=${state.page}`;
+        if (query) {
+            url += `&query=${encodeURIComponent(query)}`;
         }
+        
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Hata oluştu');
         const data = await response.json();
         return data;
     } catch (error) {
-        console.error('Veri çekme hatası:', error);
+        console.error(error);
         return null;
     }
 }
@@ -26,6 +33,11 @@ async function fetchData(endpoint) {
 function displayResults(results) {
     const grid = document.getElementById('media-grid');
     grid.innerHTML = '';
+
+    if (results.length === 0) {
+        grid.innerHTML = '<p>Sonuç bulunamadı.</p>';
+        return;
+    }
 
     results.forEach(item => {
         const card = document.createElement('div');
@@ -52,11 +64,42 @@ function displayResults(results) {
     });
 }
 
-async function init() {
-    const data = await fetchData('/movie/popular');
+async function updateContent() {
+    let endpoint;
+    
+    if (state.searchQuery) {
+        endpoint = `/search/${state.currentType}`;
+        sectionTitle.textContent = `"${state.searchQuery}" için Sonuçlar (${state.currentType === 'movie' ? 'Film' : 'Dizi'})`;
+    } else {
+        endpoint = `/${state.currentType}/popular`;
+        sectionTitle.textContent = `Popüler ${state.currentType === 'movie' ? 'Filmler' : 'Diziler'}`;
+    }
+
+    const data = await fetchData(endpoint, state.searchQuery);
     if (data && data.results) {
         displayResults(data.results);
     }
 }
 
-document.addEventListener('DOMContentLoaded', init);
+
+searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (query) {
+        state.searchQuery = query;
+        updateContent();
+    }
+});
+
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        state.currentType = btn.dataset.type;
+
+        updateContent();
+    });
+});
+
+document.addEventListener('DOMContentLoaded', updateContent);
