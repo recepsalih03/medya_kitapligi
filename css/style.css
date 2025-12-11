@@ -204,3 +204,64 @@ footer {
     font-size: 0.8rem;
     color: #aaa;
 }
+/* Modal İçerik Tasarımı */
+.modal-flex {
+    display: flex;
+    gap: 20px;
+    color: var(--text-color);
+}
+
+.modal-poster {
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.modal-info {
+    flex: 1;
+}
+
+.modal-info h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.modal-info .meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.modal-info p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.genres {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.genre-tag {
+    background: #444;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* Mobil için Modal Düzeni */
+@media (max-width: 768px) {
+    .modal-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+    .modal-poster {
+        width: 100%;
+        max-width: 250px;
+    }
+}
