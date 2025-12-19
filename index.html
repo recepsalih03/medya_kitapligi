@@ -3,57 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medya Kütüphanesi</title>
+    <title>Sanal Kütüphane | Kitap Arşiviniz</title>
+    <meta name="description" content="Google Books altyapısı ile çalışan kişisel sanal kütüphane ve okuma listesi uygulaması.">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>CineLibrary</h1>
-            <nav>
+            <h1>📚 Sanal Kütüphane</h1>
+            <nav aria-label="Ana Menü">
                 <ul>
-                    <li><a href="#" id="nav-home" class="active">Ana Sayfa</a></li>
-                    <li><a href="#" id="nav-favorites">Favorilerim</a></li>
+                    <li><a href="#" id="nav-home" class="active" aria-current="page">Kütüphane</a></li>
+                    <li><a href="#" id="nav-favorites">Okuma Listem</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <main class="container">
-        <section id="search-section">
-            <form id="search-form">
-                <input type="text" id="search-input" placeholder="Film veya dizi ara...">
-                <button type="submit">Ara</button>
+        <section id="search-section" aria-labelledby="search-heading">
+            <h2 id="search-heading" class="visually-hidden">Kitap Arama</h2>
+            <form id="search-form" role="search">
+                <label for="search-input" class="visually-hidden">Kitap Ara</label>
+                <input type="text" id="search-input" placeholder="Kitap adı, yazar veya konu ara..." aria-label="Kitap arama kutusu">
+                <button type="submit" aria-label="Aramayı Başlat">Ara</button>
             </form>
-            <div class="filters">
-                <button class="filter-btn active" data-type="movie">Filmler</button>
-                <button class="filter-btn" data-type="tv">Diziler</button>
+            
+            <div class="filters" role="group" aria-label="Kitap Kategorileri">
+                <button class="filter-btn active" data-query="subject:fiction" aria-pressed="true">Roman</button>
+                <button class="filter-btn" data-query="subject:science" aria-pressed="false">Bilim</button>
+                <button class="filter-btn" data-query="subject:history" aria-pressed="false">Tarih</button>
+                <button class="filter-btn" data-query="subject:fantasy" aria-pressed="false">Fantastik</button>
+                <button class="filter-btn" data-query="subject:philosophy" aria-pressed="false">Felsefe</button>
             </div>
         </section>
 
-        <section id="content-section">
-            <h2 id="section-title">Popüler İçerikler</h2>
+        <section id="content-section" aria-live="polite">
+            <h2 id="section-title">Öne Çıkan Kitaplar</h2>
             <div id="media-grid" class="grid-container"></div>
         </section>
 
-        <section id="favorites-section" class="hidden">
-            <h2>Favorilerim</h2>
+        <section id="favorites-section" class="hidden" aria-live="polite">
+            <h2>Okuma Listem (Favoriler)</h2>
             <div id="favorites-grid" class="grid-container"></div>
         </section>
     </main>
 
-    <div id="modal-overlay" class="hidden">
+    <div id="modal-overlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
         <div id="modal-content">
-            <span id="close-modal">&times;</span>
+            <button id="close-modal" aria-label="Pencereyi Kapat">&times;</button>
             <div id="modal-body"></div>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2025 CineLibrary Web Projesi</p>
+        <p>&copy; 2025 Web Teknolojileri Proje Ödevi</p>
     </footer>
 
     <script src="js/config.js"></script>
     <script src="js/app.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(() => console.log('SW Kayıtlı'))
+                    .catch((err) => console.log('SW Hata:', err));
+            });
+        }
+    </script>
 </body>
 </html>
